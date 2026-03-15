@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vendor Directory - DreamWedding</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="bg-light">
+
+  <nav class="navbar navbar-expand-lg bg-white sticky-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">DreamWedding</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav align-items-center">
+          <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link active" href="vendor-list.html">Vendors</a></li>
+          <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="bg-dark text-white py-5 text-center" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=1500&q=80') center/cover;">
+    <div class="container py-4">
+      <h1 class="display-4">Find Your Perfect Vendor</h1>
+      <p class="lead">Browse venues, photographers, and more.</p>
+    </div>
+  </div>
+
+  <div class="container my-5">
+    <div class="row">
+      <!-- Filter Sidebar -->
+      <div class="col-md-3 mb-4">
+        <button class="btn btn-outline-primary d-md-none w-100 mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse">
+          <i class="fa-solid fa-sliders me-2"></i> Show Filters
+        </button>
+        <div class="collapse d-md-block" id="filterCollapse">
+          <div class="card border-0 shadow-sm rounded-4 p-3">
+            <h5 class="fw-bold mb-3">Filters</h5>
+            <form>
+              <div class="mb-3">
+                <label class="form-label fw-bold small text-muted">Category</label>
+                <select class="form-select form-select-sm">
+                  <option selected>All Categories</option>
+                  
+                  <optgroup label="Venues">
+                    <option value="1">Ceremony Venues</option>
+                    <option value="2">Reception Venues</option>
+                    <option value="3">Rehearsal Dinner Venues</option>
+                  </optgroup>
+                  
+                  <optgroup label="Food & Beverage">
+                    <option value="4">Caterers</option>
+                    <option value="5">Wedding Cake Bakers</option>
+                    <option value="6">Bartenders & Beverages</option>
+                  </optgroup>
+  
+                  <optgroup label="Photo & Video">
+                    <option value="7">Wedding Photographers</option>
+                    <option value="8">Wedding Videographers</option>
+                    <option value="9">Photo Booth Rentals</option>
+                  </optgroup>
+  
+                  <optgroup label="Decor & Rentals">
+                    <option value="10">Florists</option>
+                    <option value="11">Decorators & Event Stylists</option>
+                    <option value="12">Furniture & Equipment Rentals</option>
+                  </optgroup>
+  
+                  <optgroup label="Entertainment">
+                    <option value="13">Wedding DJs</option>
+                    <option value="14">Live Bands</option>
+                    <option value="15">Ceremony Musicians</option>
+                  </optgroup>
+  
+                  <optgroup label="Beauty & Hair">
+                    <option value="16">Bridal Makeup Artists</option>
+                    <option value="17">Hair Stylists</option>
+                    <option value="18">Spa & Wellness</option>
+                  </optgroup>
+  
+                  <optgroup label="Attire & Jewelry">
+                    <option value="19">Bridal Salons & Boutiques</option>
+                    <option value="20">Tuxedos & Men's Attire</option>
+                    <option value="21">Jewelry & Accessories</option>
+                  </optgroup>
+  
+                  <optgroup label="Planners & Management">
+                    <option value="22">Full-Service Planners</option>
+                    <option value="23">Day-Of Coordinators</option>
+                  </optgroup>
+  
+                  <optgroup label="Other Services">
+                    <option value="24">Invitations & Stationery</option>
+                    <option value="25">Transportation</option>
+                    <option value="26">Wedding Officiants</option>
+                    <option value="27">Favors & Gifts</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-bold small text-muted">Location</label>
+                <input type="text" class="form-control form-control-sm" placeholder="City or Zip">
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-bold small text-muted">Price Range</label>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="price1">
+                  <label class="form-check-label small" for="price1">$ (Budget)</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="price2">
+                  <label class="form-check-label small" for="price2">$$ (Standard)</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="price3">
+                  <label class="form-check-label small" for="price3">$$$ (Premium)</label>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-custom w-100 btn-sm">Apply Filters</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vendor Grid -->
+      <div class="col-md-9">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <p class="mb-0 text-muted">Showing 24 results</p>
+          <select class="form-select w-auto form-select-sm">
+            <option>Sort by: Recommended</option>
+            <option>Rating (High to Low)</option>
+            <option>Price (Low to High)</option>
+          </select>
+        </div>
+
+        <div class="row g-4">
+          <!-- Vendor Item -->
+          <div class="col-lg-4 col-sm-6">
+            <div class="card vendor-card h-100">
+              <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Venue">
+              <div class="card-body">
+                <span class="badge bg-secondary mb-2">Venue</span>
+                <h5 class="card-title">Sunset Gardens</h5>
+                <p class="text-muted small mb-2"><i class="fa-solid fa-location-dot"></i> Los Angeles, CA</p>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="text-primary fw-bold">$$$</span>
+                  <div><i class="fa-solid fa-star text-warning"></i> 4.9 (120)</div>
+                </div>
+              </div>
+              <div class="card-footer bg-white border-0 pb-3 text-center">
+                <a href="vendor-details.html" class="btn btn-outline-dark w-100 rounded-pill">View Details</a>
+              </div>
+            </div>
+          </div>
+          <!-- Vendor Item -->
+          <div class="col-lg-4 col-sm-6">
+            <div class="card vendor-card h-100">
+              <img src="https://images.unsplash.com/photo-1533104816157-1941ad7c3906?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Photo">
+              <div class="card-body">
+                <span class="badge bg-secondary mb-2">Photographer</span>
+                <h5 class="card-title">Lens & Light</h5>
+                <p class="text-muted small mb-2"><i class="fa-solid fa-location-dot"></i> New York, NY</p>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="text-primary fw-bold">$$</span>
+                  <div><i class="fa-solid fa-star text-warning"></i> 4.8 (95)</div>
+                </div>
+              </div>
+              <div class="card-footer bg-white border-0 pb-3 text-center">
+                <a href="vendor-details.html" class="btn btn-outline-dark w-100 rounded-pill">View Details</a>
+              </div>
+            </div>
+          </div>
+          <!-- Vendor Item -->
+          <div class="col-lg-4 col-sm-6">
+            <div class="card vendor-card h-100">
+              <img src="https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Food">
+              <div class="card-body">
+                <span class="badge bg-secondary mb-2">Catering</span>
+                <h5 class="card-title">Delightful Bites</h5>
+                <p class="text-muted small mb-2"><i class="fa-solid fa-location-dot"></i> Chicago, IL</p>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span class="text-primary fw-bold">$$$</span>
+                  <div><i class="fa-solid fa-star text-warning"></i> 5.0 (200)</div>
+                </div>
+              </div>
+              <div class="card-footer bg-white border-0 pb-3 text-center">
+                <a href="vendor-details.html" class="btn btn-outline-dark w-100 rounded-pill">View Details</a>
+              </div>
+            </div>
+          </div>
+          <!-- More items would be dynamically added here -->
+        </div>
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation" class="mt-5">
+          <ul class="pagination justify-content-center">
+            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Previous</a></li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/script.js"></script>
+</body>
+</html>

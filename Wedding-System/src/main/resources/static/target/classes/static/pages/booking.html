@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Vendor - DreamWedding</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="bg-light">
+
+  <nav class="navbar navbar-expand-lg bg-white shadow-sm">
+    <div class="container d-flex justify-content-center">
+      <a class="navbar-brand fs-3" href="../index.html">DreamWedding Checkout</a>
+    </div>
+  </nav>
+
+  <div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 mb-4">
+          <h2 class="fw-bold mb-4 font-playfair text-center">Booking Request</h2>
+          
+          <div class="d-flex align-items-center mb-4 p-3 bg-light rounded-3 border">
+            <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=150&q=80" class="rounded object-fit-cover me-3" width="80" height="80">
+            <div>
+              <h5 class="fw-bold mb-0">Sunset Gardens</h5>
+              <p class="text-muted small mb-0">Venue Provider</p>
+            </div>
+          </div>
+
+          <form action="dashboard.html" class="needs-validation" novalidate>
+            <h5 class="fw-bold mb-3 border-bottom pb-2">1. Event Details</h5>
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label class="form-label fw-bold small">Event Date</label>
+                <input type="date" class="form-control" required>
+                <div class="invalid-feedback">Please select a date.</div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold small">Estimated Guest Count</label>
+                <input type="number" class="form-control" placeholder="e.g. 150" required>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mb-3 border-bottom pb-2">2. Package Selection</h5>
+            <div class="mb-4">
+              <div class="form-check mb-2 p-3 border rounded-3 bg-white">
+                <input class="form-check-input ms-1" type="radio" name="package" id="pkg1" required>
+                <label class="form-check-label ms-2 d-flex justify-content-between w-100" for="pkg1">
+                  <span><strong>Silver Package</strong> <br><small class="text-muted">8 hours, Basic setup</small></span>
+                  <span class="fw-bold">$3,500</span>
+                </label>
+              </div>
+              <div class="form-check mb-2 p-3 border rounded-3 bg-white">
+                <input class="form-check-input ms-1" type="radio" name="package" id="pkg2" required>
+                <label class="form-check-label ms-2 d-flex justify-content-between w-100" for="pkg2">
+                  <span><strong>Gold Package</strong> <br><small class="text-muted">12 hours, Premium setup</small></span>
+                  <span class="fw-bold">$5,000</span>
+                </label>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mb-3 border-bottom pb-2">3. Additional Information</h5>
+            <div class="mb-4">
+              <label class="form-label fw-bold small">Special Requests / Notes</label>
+              <textarea class="form-control" rows="3" placeholder="Tell the vendor about specific themes or requirements..."></textarea>
+            </div>
+
+            <div class="bg-secondary bg-opacity-10 p-4 rounded-3 mb-4">
+              <h6 class="fw-bold">Booking Summary</h6>
+              <p class="small text-muted mb-0">Note: This is a booking request. You will not be charged until the vendor confirms availability and sends an invoice.</p>
+            </div>
+
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-custom py-3 fs-5">Submit Booking Request</button>
+              <a href="vendor-details.html" class="btn btn-link text-muted text-decoration-none">Cancel</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/script.js"></script>
+</body>
+</html>

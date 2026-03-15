@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Dashboard - DreamWedding</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="bg-light">
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg bg-white sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">DreamWedding</a>
+      <div class="d-flex align-items-center">
+        <span class="me-3 d-none d-md-inline text-muted">Welcome, John & Jane</span>
+        <img src="https://ui-avatars.com/api/?name=John+Jane&background=d4af37&color=fff" class="rounded-circle" width="40" alt="Profile">
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <div class="row">
+      <!-- Sidebar -->
+      <div class="col-md-3 mb-4">
+        <div class="dashboard-sidebar">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" href="dashboard.html"><i class="fa-solid fa-house me-2"></i> Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"><i class="fa-solid fa-calendar-check me-2"></i> My Bookings</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"><i class="fa-solid fa-heart me-2"></i> Saved Vendors</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"><i class="fa-solid fa-wallet me-2"></i> Budget Planner</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"><i class="fa-solid fa-user me-2"></i> Profile Settings</a>
+            </li>
+            <li class="nav-item mt-3 border-top pt-2">
+              <a class="nav-link text-danger" href="login.html"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="col-md-9">
+        <h2 class="mb-4">Wedding Dashboard</h2>
+        
+        <!-- Wedding Stats -->
+        <div class="row mb-4">
+          <div class="col-md-4">
+            <div class="card text-center border-0 shadow-sm rounded-4 mb-3">
+              <div class="card-body py-4">
+                <i class="fa-regular fa-calendar-days fs-2 text-primary mb-2"></i>
+                <h5 class="fw-bold">Days Left</h5>
+                <h2 class="text-primary fw-bold">142</h2>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card text-center border-0 shadow-sm rounded-4 mb-3">
+              <div class="card-body py-4">
+                <i class="fa-solid fa-users fs-2 text-primary mb-2"></i>
+                <h5 class="fw-bold">Guest List</h5>
+                <h2 class="text-primary fw-bold">150</h2>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card text-center border-0 shadow-sm rounded-4 mb-3">
+              <div class="card-body py-4">
+                <i class="fa-solid fa-money-bill-wave fs-2 text-primary mb-2"></i>
+                <h5 class="fw-bold">Budget Specs</h5>
+                <h2 class="text-primary fw-bold">$25K</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Bookings & Timeline -->
+        <div class="row">
+          <div class="col-md-7 mb-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                  <h5 class="fw-bold mb-0">Booking Requests</h5>
+                  <a href="#" class="text-primary text-decoration-none">View All</a>
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item px-0 py-3 d-flex align-items-center">
+                    <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=100&q=80" class="rounded" width="50" height="50" style="object-fit:cover;">
+                    <div class="ms-3 flex-grow-1">
+                      <h6 class="mb-0 fw-bold">Sunset Gardens</h6>
+                      <small class="text-muted">Venue • Aug 15, 2026</small>
+                    </div>
+                    <span class="badge badge-confirmed rounded-pill">Confirmed</span>
+                  </li>
+                  <li class="list-group-item px-0 py-3 d-flex align-items-center">
+                    <img src="https://images.unsplash.com/photo-1533104816157-1941ad7c3906?auto=format&fit=crop&w=100&q=80" class="rounded" width="50" height="50" style="object-fit:cover;">
+                    <div class="ms-3 flex-grow-1">
+                      <h6 class="mb-0 fw-bold">Lens & Light Studios</h6>
+                      <small class="text-muted">Photography • Aug 15, 2026</small>
+                    </div>
+                    <span class="badge badge-pending rounded-pill">Pending</span>
+                  </li>
+                </ul>
+                <div class="mt-3">
+                  <a href="vendor-list.html" class="btn btn-outline-primary w-100"><i class="fa-solid fa-plus me-1"></i> Find New Vendors</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-5 mb-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+              <div class="card-body">
+                <h5 class="fw-bold mb-4">Event Timeline</h5>
+                <div class="timeline">
+                  <div class="timeline-item">
+                    <h6 class="fw-bold mb-1">Engagement Party</h6>
+                    <small class="text-muted d-block mb-2">March 10, 2026</small>
+                    <span class="badge bg-success">Completed</span>
+                  </div>
+                  <div class="timeline-item">
+                    <h6 class="fw-bold mb-1">Send Invitations</h6>
+                    <small class="text-muted d-block mb-2">May 1, 2026</small>
+                    <span class="badge bg-secondary">Upcoming</span>
+                  </div>
+                  <div class="timeline-item">
+                    <h6 class="fw-bold mb-1">Wedding Day!</h6>
+                    <small class="text-muted d-block mb-2">August 15, 2026</small>
+                    <span class="badge bg-primary">Main Event</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/script.js"></script>
+</body>
+</html>
