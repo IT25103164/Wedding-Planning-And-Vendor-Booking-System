@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vendor Details - DreamWedding</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="bg-light">
+
+  <nav class="navbar navbar-expand-lg bg-white sticky-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">DreamWedding</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav align-items-center">
+          <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="vendor-list.html">Vendors & Venues</a></li>
+          <li class="nav-item ms-lg-3"><a class="btn btn-outline-dark rounded-pill px-4" href="dashboard.html">My Dashboard</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Vendor Header Image Gallery -->
+  <div class="container-fluid px-0">
+    <div class="row g-0">
+      <div class="col-md-8">
+        <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1200&q=80" class="img-fluid w-100" style="height: 400px; object-fit: cover;" alt="Main Image">
+      </div>
+      <div class="col-md-4 d-none d-md-block">
+        <div class="row g-0 h-100">
+          <div class="col-12 h-50">
+            <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80" class="img-fluid w-100 h-100" style="object-fit: cover;" alt="Gallery 1">
+          </div>
+          <div class="col-12 h-50">
+            <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=600&q=80" class="img-fluid w-100 h-100" style="object-fit: cover;" alt="Gallery 2">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container my-5">
+    <div class="row">
+      <!-- Details Section -->
+      <div class="col-lg-8 mb-4">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <div>
+            <span class="badge bg-secondary mb-2">Venue</span>
+            <h1 class="font-weight-bold mb-1" style="font-family: 'Playfair Display', serif;">Sunset Gardens</h1>
+            <p class="text-muted"><i class="fa-solid fa-location-dot"></i> Los Angeles, CA • <a href="#map" class="text-primary">View Map</a></p>
+          </div>
+          <div class="text-end">
+            <div class="fs-4 fw-bold text-primary">$$$</div>
+            <div class="d-flex align-items-center">
+              <i class="fa-solid fa-star text-warning me-1"></i> <span class="fw-bold me-1">4.9</span> <span class="text-muted">(120 reviews)</span>
+            </div>
+          </div>
+        </div>
+        
+        <hr>
+
+        <h4 class="mt-4 fw-bold">About This Vendor</h4>
+        <p class="text-muted lh-lg">
+          Sunset Gardens is a premier wedding venue located in the heart of Los Angeles. 
+          Surrounded by lush landscapes and stunning floral arrangements, our venue offers an elegant and romantic setting for your special day. Whether you are planning an intimate gathering or a grand celebration, our dedicated team will work closely with you.
+        </p>
+
+        <h4 class="mt-5 fw-bold">Service Packages</h4>
+        <div class="table-responsive mt-3">
+          <table class="table table-bordered bg-white rounded-3 overflow-hidden">
+            <thead class="table-light">
+              <tr>
+                <th>Package Name</th>
+                <th>Includes</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="fw-bold">Silver Package</td>
+                <td class="text-muted">Venue access (8 hours), Basic setup, Event coordinator</td>
+                <td>$3,500</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">Gold Package</td>
+                <td class="text-muted">Venue access (12 hours), Premium setup, Coordinator, Basic lighting</td>
+                <td>$5,000</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">Platinum Package</td>
+                <td class="text-muted">Exclusive access (All day), Full decor, Audio/Visual, Catering base</td>
+                <td>$8,500+</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4 class="mt-5 fw-bold d-flex justify-content-between">Reviews 
+          <button class="btn btn-outline-primary btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#reviewModal">Write a Review</button>
+        </h4>
+        <div class="card border-0 shadow-sm mt-3 p-4">
+          <div class="d-flex mb-3 border-bottom pb-3">
+            <img src="https://ui-avatars.com/api/?name=Emily+R&background=random" class="rounded-circle me-3" width="50" height="50">
+            <div>
+              <h6 class="fw-bold mb-0">Emily R.</h6>
+              <div class="text-warning small mb-1">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+              </div>
+              <p class="text-muted mb-0">"Absolutely beautiful venue! The staff was incredible and everything was perfect."</p>
+              <small class="text-muted">Posted on August 10, 2025</small>
+            </div>
+          </div>
+          <div class="d-flex">
+            <img src="https://ui-avatars.com/api/?name=Michael+T&background=random" class="rounded-circle me-3" width="50" height="50">
+            <div>
+              <h6 class="fw-bold mb-0">Michael T.</h6>
+              <div class="text-warning small mb-1">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+              </div>
+              <p class="text-muted mb-0">"Great experience overall. The lighting was slightly dim during dinner but the garden was magical."</p>
+              <small class="text-muted">Posted on July 22, 2025</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Booking Sidebar -->
+      <div class="col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 sticky-top" style="top: 100px;">
+          <div class="card-body p-4">
+            <h5 class="fw-bold mb-3 text-center">Ready to Book?</h5>
+            <p class="text-center text-muted small mb-4">Request a booking or contact the vendor directly for queries.</p>
+            
+            <a href="booking.html" class="btn btn-custom w-100 py-3 mb-3 fw-bold fs-5">Book Vendor Now</a>
+            <button class="btn btn-outline-dark w-100 py-2 mb-4"><i class="fa-regular fa-comment me-2"></i> Message Vendor</button>
+            
+            <div class="border-top pt-3">
+              <h6 class="fw-bold">Contact Info</h6>
+              <ul class="list-unstyled text-muted small mt-2">
+                <li class="mb-2"><i class="fa-solid fa-phone me-2"></i>(310) 555-0198</li>
+                <li class="mb-2"><i class="fa-solid fa-envelope me-2"></i>events@sunsetgardens.com</li>
+                <li><i class="fa-solid fa-globe me-2"></i>www.sunsetgardens.com</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Review Modal -->
+  <div class="modal fade" id="reviewModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content border-0 rounded-4">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Write a Review</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="reviewForm">
+            <div class="mb-3 text-center fs-3 text-warning star-rating">
+              <i class="far fa-star cursor-pointer"></i>
+              <i class="far fa-star cursor-pointer"></i>
+              <i class="far fa-star cursor-pointer"></i>
+              <i class="far fa-star cursor-pointer"></i>
+              <i class="far fa-star cursor-pointer"></i>
+              <input type="hidden" id="ratingValue">
+            </div>
+            <div class="mb-3">
+              <textarea class="form-control" rows="4" placeholder="Share your experience..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-custom w-100">Submit Review</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/script.js"></script>
+</body>
+</html>
