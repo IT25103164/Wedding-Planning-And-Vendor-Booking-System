@@ -79,13 +79,71 @@ document.addEventListener("DOMContentLoaded", () => {
     const pwd = document.getElementById("password");
     const confirmPwd = document.getElementById("confirmPassword");
 
-    registerForm.addEventListener("submit", (e) => {
+    registerForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
       if (pwd.value !== confirmPwd.value) {
-        e.preventDefault();
         confirmPwd.setCustomValidity("Passwords do not match");
         confirmPwd.reportValidity();
+        return;
       } else {
         confirmPwd.setCustomValidity("");
+      }
+
+      if (!registerForm.checkValidity()) {
+        e.stopPropagation();
+        registerForm.classList.add('was-validated');
+        return;
+      }
+
+      const userData = {
+        firstName: document.getElementById("firstName").value,
+        lastName: document.getElementById("lastName").value,
+        email: document.getElementById("email").value,
+        phone: document.getElementById("phone").value,
+        role: document.getElementById("role").value,
+        password: pwd.value
+      };
+
+      const btn = document.getElementById("createAccountBtn");
+      const alertBox = document.getElementById("alertMessage");
+      btn.disabled = true;
+      btn.innerText = "Creating Account...";
+      alertBox.classList.add("d-none");
+      alertBox.classList.remove("alert-danger", "alert-success");
+
+      try {
+        const response = await fetch("http://localhost:8080/api/auth/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(userData)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alertBox.classList.remove("d-none");
+          alertBox.classList.add("alert-success");
+          alertBox.innerText = "Account created successfully! Redirecting to login...";
+          
+          setTimeout(() => {
+            window.location.href = "login.html";
+          }, 1500);
+        } else {
+          alertBox.classList.remove("d-none");
+          alertBox.classList.add("alert-danger");
+          alertBox.innerText = data.message || "Registration failed. Please try again.";
+          btn.disabled = false;
+          btn.innerText = "Create Account";
+        }
+      } catch (error) {
+        alertBox.classList.remove("d-none");
+        alertBox.classList.add("alert-danger");
+        alertBox.innerText = "Cannot connect to server. Please make sure the backend is running.";
+        btn.disabled = false;
+        btn.innerText = "Create Account";
       }
     });
 
@@ -98,7 +156,148 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Example: Display selected rating on Review pages
+  // ── LOGIN FORM ────────────────────────────────────────────────
+  const loginForm = document.getElementById("loginForm");
+  if (loginForm) {
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      if (!loginForm.checkValidity()) {
+        e.stopPropagation();
+        loginForm.classList.add('was-validated');
+        return;
+      }
+
+      const credentials = {
+        email:    document.getElementById("email").value.trim(),
+        password: document.getElementById("password").value
+      };
+
+      const btn      = document.getElementById("loginBtn");
+      const alertBox = document.getElementById("alertMessage");
+      btn.disabled   = true;
+      btn.innerText  = "Logging in...";
+      alertBox.classList.add("d-none");
+      alertBox.classList.remove("alert-danger", "alert-success", "alert-warning");
+
+      try {
+        const response = await fetch("http://localhost:8080/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(credentials)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // ✅ Save session data
+          sessionStorage.setItem("userId",    data.id);
+          sessionStorage.setItem("userEmail", data.email);
+          sessionStorage.setItem("userRole",  data.role);
+          sessionStorage.setItem("firstName", data.firstName);
+          sessionStorage.setItem("lastName",  data.lastName);
+
+          alertBox.classList.remove("d-none");
+          alertBox.classList.add("alert-success");
+          alertBox.innerText = `Welcome back, ${data.firstName}! Redirecting...`;
+
+          // ── Role-based redirect (ADMIN / VENDOR / CUSTOMER) ──
+          setTimeout(() => {
+            const role = data.role;
+            if (role === "ADMIN") {
+              window.location.href = "admin-dashboard.html";
+            } else if (role === "VENDOR") {
+              window.location.href = "vendor-list.html";
+            } else {
+              window.location.href = "dashboard.html";   // CUSTOMER
+            }
+          }, 1200);
+
+        } else if (data.errorCode === "USER_NOT_FOUND") {
+          // ❌ No account found → show popup
+          btn.disabled  = false;
+          btn.innerText = "Login";
+          showSignUpPopup();
+
+        } else if (data.errorCode === "WRONG_PASSWORD") {
+          // ❌ Wrong password → inline alert
+          alertBox.classList.remove("d-none");
+          alertBox.classList.add("alert-danger");
+          alertBox.innerText = "Incorrect password. Please try again.";
+          btn.disabled  = false;
+          btn.innerText = "Login";
+
+        } else {
+          // ❌ Generic server error
+          alertBox.classList.remove("d-none");
+          alertBox.classList.add("alert-danger");
+          alertBox.innerText = data.message || "Login failed. Please try again.";
+          btn.disabled  = false;
+          btn.innerText = "Login";
+        }
+
+      } catch (error) {
+        alertBox.classList.remove("d-none");
+        alertBox.classList.add("alert-danger");
+        alertBox.innerText = "Cannot connect to server. Please make sure the backend is running.";
+        btn.disabled  = false;
+        btn.innerText = "Login";
+      }
+    });
+  }
+
+  // ── SIGN-UP POPUP (called when user not found) ─────────────
+  function showSignUpPopup() {
+    // Remove any existing popup first
+    const existing = document.getElementById("signUpPopup");
+    if (existing) existing.remove();
+
+    const popup = document.createElement("div");
+    popup.id = "signUpPopup";
+    popup.style.cssText = `
+      position: fixed; inset: 0; background: rgba(0,0,0,0.55);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9999; animation: fadeIn 0.2s ease;
+    `;
+    popup.innerHTML = `
+      <div style="
+        background: #fff; border-radius: 16px; padding: 2.5rem 2rem;
+        max-width: 420px; width: 90%; text-align: center;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+        animation: slideUp 0.3s ease;
+      ">
+        <div style="font-size:3rem; margin-bottom:1rem;">🔍</div>
+        <h4 style="font-weight:700; margin-bottom:0.5rem; color:#1a1714;">Account Not Found</h4>
+        <p style="color:#6c757d; margin-bottom:1.5rem;">
+          No account exists with that email address.<br>
+          Please <strong>sign up</strong> to create one.
+        </p>
+        <div style="display:flex; gap:0.75rem; justify-content:center; flex-wrap:wrap;">
+          <a href="register.html" style="
+            background: linear-gradient(135deg, #c9a84c, #a0702a);
+            color: #fff; border: none; border-radius: 8px;
+            padding: 0.6rem 1.6rem; font-weight:600; font-size:0.95rem;
+            text-decoration:none; display:inline-block;
+          ">Sign Up Now</a>
+          <button onclick="document.getElementById('signUpPopup').remove()" style="
+            background: transparent; color: #6c757d; border: 1.5px solid #dee2e6;
+            border-radius: 8px; padding: 0.6rem 1.4rem; font-weight:600;
+            font-size:0.95rem; cursor:pointer;
+          ">Try Again</button>
+        </div>
+      </div>
+      <style>
+        @keyframes fadeIn  { from { opacity:0 } to { opacity:1 } }
+        @keyframes slideUp { from { transform:translateY(30px); opacity:0 } to { transform:translateY(0); opacity:1 } }
+      </style>
+    `;
+    // Close on backdrop click
+    popup.addEventListener("click", (e) => {
+      if (e.target === popup) popup.remove();
+    });
+    document.body.appendChild(popup);
+  }
+
   const ratingStars = document.querySelectorAll('.star-rating i');
   let currentRating = 0;
   
@@ -402,3 +601,46 @@ function submitQuickRating() {
   });
 }
 
+// ── ADMIN QUICK LOGIN ──────────────────────────────────────────
+// Called by the "Login as Admin" button on login.html.
+function loginAsAdmin() {
+  const adminBtn = document.getElementById("adminLoginBtn");
+
+  if (adminBtn) {
+    adminBtn.disabled = true;
+    adminBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color:#c9a84c;"></i>&nbsp;Signing in as Admin...';
+  }
+
+  const adminData = {
+    email: "admin@gmail.com",
+    password: "Admin123"
+  };
+
+  fetch("http://localhost:8080/api/admin/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(adminData)
+  })
+    .then(res => res.json())
+    .then(data => {
+      // If data is a string (error message), or doesn't have email, it failed
+      if (data && data.email) {
+        window.location.href = "admin-dashboard.html";
+      } else {
+        alert("Admin email or password incorrect");
+        if (adminBtn) {
+          adminBtn.disabled = false;
+          adminBtn.innerHTML = '<i class="fa-solid fa-shield-halved" style="color:#c9a84c;"></i>&nbsp;Login as Admin';
+        }
+      }
+    })
+    .catch(err => {
+      alert("Admin login failed");
+      if (adminBtn) {
+        adminBtn.disabled = false;
+        adminBtn.innerHTML = '<i class="fa-solid fa-shield-halved" style="color:#c9a84c;"></i>&nbsp;Login as Admin';
+      }
+    });
+}
