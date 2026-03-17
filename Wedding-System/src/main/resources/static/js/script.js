@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     registerForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      
+
       if (pwd.value !== confirmPwd.value) {
         confirmPwd.setCustomValidity("Passwords do not match");
         confirmPwd.reportValidity();
@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
           alertBox.classList.remove("d-none");
           alertBox.classList.add("alert-success");
           alertBox.innerText = "Account created successfully! Redirecting to login...";
-          
+
           setTimeout(() => {
             window.location.href = "login.html";
           }, 1500);
@@ -169,14 +169,14 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const credentials = {
-        email:    document.getElementById("email").value.trim(),
+        email: document.getElementById("email").value.trim(),
         password: document.getElementById("password").value
       };
 
-      const btn      = document.getElementById("loginBtn");
+      const btn = document.getElementById("loginBtn");
       const alertBox = document.getElementById("alertMessage");
-      btn.disabled   = true;
-      btn.innerText  = "Logging in...";
+      btn.disabled = true;
+      btn.innerText = "Logging in...";
       alertBox.classList.add("d-none");
       alertBox.classList.remove("alert-danger", "alert-success", "alert-warning");
 
@@ -191,11 +191,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (response.ok) {
           // ✅ Save session data
-          sessionStorage.setItem("userId",    data.id);
+          sessionStorage.setItem("userId", data.id);
           sessionStorage.setItem("userEmail", data.email);
-          sessionStorage.setItem("userRole",  data.role);
+          sessionStorage.setItem("userRole", data.role);
           sessionStorage.setItem("firstName", data.firstName);
-          sessionStorage.setItem("lastName",  data.lastName);
+          sessionStorage.setItem("lastName", data.lastName);
 
           alertBox.classList.remove("d-none");
           alertBox.classList.add("alert-success");
@@ -215,7 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         } else if (data.errorCode === "USER_NOT_FOUND") {
           // ❌ No account found → show popup
-          btn.disabled  = false;
+          btn.disabled = false;
           btn.innerText = "Login";
           showSignUpPopup();
 
@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
           alertBox.classList.remove("d-none");
           alertBox.classList.add("alert-danger");
           alertBox.innerText = "Incorrect password. Please try again.";
-          btn.disabled  = false;
+          btn.disabled = false;
           btn.innerText = "Login";
 
         } else {
@@ -232,7 +232,7 @@ document.addEventListener("DOMContentLoaded", () => {
           alertBox.classList.remove("d-none");
           alertBox.classList.add("alert-danger");
           alertBox.innerText = data.message || "Login failed. Please try again.";
-          btn.disabled  = false;
+          btn.disabled = false;
           btn.innerText = "Login";
         }
 
@@ -240,7 +240,7 @@ document.addEventListener("DOMContentLoaded", () => {
         alertBox.classList.remove("d-none");
         alertBox.classList.add("alert-danger");
         alertBox.innerText = "Cannot connect to server. Please make sure the backend is running.";
-        btn.disabled  = false;
+        btn.disabled = false;
         btn.innerText = "Login";
       }
     });
@@ -300,16 +300,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const ratingStars = document.querySelectorAll('.star-rating i');
   let currentRating = 0;
-  
+
   ratingStars.forEach((star, index) => {
     star.addEventListener('mouseover', () => {
       highlightStars(index + 1);
     });
-    
+
     star.addEventListener('mouseout', () => {
       highlightStars(currentRating);
     });
-    
+
     star.addEventListener('click', () => {
       currentRating = index + 1;
       const ratingInput = document.getElementById('ratingValue');
@@ -339,7 +339,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let targetScroll = 0;
     let currentScroll = 0;
     const scrollSpeed = 0.4; // Faster response (was 0.15)
-    
+
     // Initial jump to center
     setTimeout(() => {
       const item = slider.firstElementChild;
@@ -370,7 +370,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // 3. Smooth Lerp
       currentScroll += (targetScroll - currentScroll) * scrollSpeed;
       slider.scrollLeft = currentScroll;
-      
+
       requestAnimationFrame(animate);
     };
 
@@ -378,8 +378,8 @@ document.addEventListener("DOMContentLoaded", () => {
     slider.addEventListener('mousemove', (e) => {
       const mouseX = e.pageX - slider.offsetLeft;
       const midX = slider.clientWidth / 2;
-      const delta = (mouseX - midX) / midX; 
-      targetScroll -= delta * 15; 
+      const delta = (mouseX - midX) / midX;
+      targetScroll -= delta * 15;
     });
 
     slider.addEventListener('touchmove', (e) => {
@@ -396,24 +396,24 @@ document.addEventListener("DOMContentLoaded", () => {
   // ============================================================
   //  HERO SECTION — SCROLL ANIMATIONS
   // ============================================================
-  const heroSection  = document.querySelector('.hero-section');
-  const heroContent  = document.querySelector('.hero-content');
-  const navbar       = document.querySelector('.navbar');
-  const scrollArrow  = document.getElementById('heroScrollArrow');
+  const heroSection = document.querySelector('.hero-section');
+  const heroContent = document.querySelector('.hero-content');
+  const navbar = document.querySelector('.navbar');
+  const scrollArrow = document.getElementById('heroScrollArrow');
 
   if (heroSection && heroContent) {
     window.addEventListener('scroll', () => {
-      const scrollY      = window.scrollY;
-      const heroHeight   = heroSection.offsetHeight;
-      const progress     = Math.min(scrollY / heroHeight, 1); // 0 → 1 as hero scrolls out
+      const scrollY = window.scrollY;
+      const heroHeight = heroSection.offsetHeight;
+      const progress = Math.min(scrollY / heroHeight, 1); // 0 → 1 as hero scrolls out
 
       // 1. Parallax — move background upward at half scroll speed
       heroSection.style.backgroundPositionY = `calc(50% + ${scrollY * 0.35}px)`;
 
       // 2. Hero content — fade out + slide up as user scrolls
-      const contentOpacity   = 1 - progress * 1.8;       // fully gone before 60% scroll
+      const contentOpacity = 1 - progress * 1.8;       // fully gone before 60% scroll
       const contentTranslate = scrollY * 0.25;            // moves up gently
-      heroContent.style.opacity   = Math.max(0, contentOpacity);
+      heroContent.style.opacity = Math.max(0, contentOpacity);
       heroContent.style.transform = `translateY(-${contentTranslate}px)`;
 
       // 3. Scroll Arrow — fade out early
@@ -445,7 +445,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ============================================================
   //  TESTIMONIALS — SEAMLESS INFINITE TRACKING
   // ============================================================
-  
+
   const setupExploreStyleMarquee = (marqueeId, autoSpeed = 1) => {
     const slider = document.getElementById(marqueeId);
     if (!slider) return;
@@ -488,16 +488,16 @@ document.addEventListener("DOMContentLoaded", () => {
       // 3. Smooth follow
       currentScroll += (targetScroll - currentScroll) * lerp;
       wrapper.scrollLeft = currentScroll;
-      
+
       requestAnimationFrame(animate);
     };
 
     wrapper.addEventListener('mousemove', (e) => {
       const mouseX = e.pageX - wrapper.offsetLeft;
       const midX = wrapper.clientWidth / 2;
-      const delta = (mouseX - midX) / midX; 
+      const delta = (mouseX - midX) / midX;
       // Inverted: Mouse on Right -> targetScroll decreases -> Cards move Right
-      targetScroll -= delta * 20; 
+      targetScroll -= delta * 20;
     });
 
     wrapper.addEventListener('touchmove', (e) => {
@@ -511,8 +511,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // Row 1 drifts Right, Row 2 drifts Left
-  setupExploreStyleMarquee('feedbackMarqueeLTR', 0.5); 
-  setupExploreStyleMarquee('feedbackMarqueeRTL', -0.5); 
+  setupExploreStyleMarquee('feedbackMarqueeLTR', 0.5);
+  setupExploreStyleMarquee('feedbackMarqueeRTL', -0.5);
 
 
   // Star Rating Selection (Reusable for any container)
@@ -522,12 +522,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const stars = container.querySelectorAll('i');
     stars.forEach(star => {
-      star.addEventListener('click', function() {
+      star.addEventListener('click', function () {
         const rating = parseInt(this.getAttribute('data-rating'));
-        
+
         // Remove active from all stars in this container
         stars.forEach(s => s.classList.remove('active'));
-        
+
         // Add active to the clicked star specifically
         // CSS will handle highlighting this star and everything to its RIGHT (~ i)
         this.classList.add('active');
@@ -548,27 +548,27 @@ document.addEventListener("DOMContentLoaded", () => {
   if (feedbackForm) {
     feedbackForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      
+
       const submitBtn = feedbackForm.querySelector('button[type="submit"]');
       const originalText = submitBtn.innerText;
-      
+
       submitBtn.disabled = true;
       submitBtn.innerText = 'Sharing Your Story...';
 
       // Simulate a small delay for premium feel
       setTimeout(() => {
         alert('Thank you for sharing your beautiful wedding story with us! 💍✨');
-        
+
         // Close modal (Bootstrap 5 way)
         const modalEl = document.getElementById('feedbackModal');
         const modalInstance = bootstrap.Modal.getInstance(modalEl);
         modalInstance.hide();
-        
+
         // Reset form
         feedbackForm.reset();
         submitBtn.disabled = false;
         submitBtn.innerText = originalText;
-        
+
         // Reset stars in form to empty/gray state
         const stars = document.getElementById('formStarRating').querySelectorAll('i');
         stars.forEach(s => {
@@ -586,14 +586,14 @@ document.addEventListener("DOMContentLoaded", () => {
 function submitQuickRating() {
   const starsContainer = document.getElementById('quickStarRating');
   const activeStars = starsContainer.querySelectorAll('i.active').length;
-  
+
   if (activeStars === 0) {
     alert('Please pick a star rating first! ⭐');
     return;
   }
 
   alert(`Thank you for your ${activeStars}-star quick rating! We appreciate it. 🌟`);
-  
+
   // Reset quick stars
   starsContainer.querySelectorAll('i').forEach(s => {
     s.classList.remove('active');
@@ -604,16 +604,28 @@ function submitQuickRating() {
 // ── ADMIN QUICK LOGIN ──────────────────────────────────────────
 // Called by the "Login as Admin" button on login.html.
 function loginAsAdmin() {
-  const adminBtn = document.getElementById("adminLoginBtn");
+  const emailInput = document.getElementById("email").value.trim();
+  const passwordInput = document.getElementById("password").value;
+  const alertBox = document.getElementById("alertMessage");
 
+  if (!emailInput || !passwordInput) {
+    alertBox.classList.remove("d-none", "alert-success", "alert-warning");
+    alertBox.classList.add("alert-danger");
+    alertBox.innerText = "Please enter both email and password to login.";
+    return;
+  }
+
+  const adminBtn = document.getElementById("adminLoginBtn");
   if (adminBtn) {
     adminBtn.disabled = true;
     adminBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color:#c9a84c;"></i>&nbsp;Signing in as Admin...';
   }
 
+  alertBox.classList.add("d-none"); // Hide existing alerts
+
   const adminData = {
-    email: "admin@gmail.com",
-    password: "Admin123"
+    email: emailInput,
+    password: passwordInput
   };
 
   fetch("http://localhost:8080/api/admin/login", {
@@ -623,13 +635,35 @@ function loginAsAdmin() {
     },
     body: JSON.stringify(adminData)
   })
-    .then(res => res.json())
+    // Parse as text first because backend might return a plain string error
+    .then(async res => {
+      const text = await res.text();
+      try {
+        return JSON.parse(text);
+      } catch (e) {
+        return { errorMsg: text };
+      }
+    })
     .then(data => {
-      // If data is a string (error message), or doesn't have email, it failed
+      // If it returned the admin object (has email property)
       if (data && data.email) {
-        window.location.href = "admin-dashboard.html";
+        sessionStorage.setItem("userEmail", data.email);
+        sessionStorage.setItem("userRole", "ADMIN");
+
+        alertBox.classList.remove("d-none", "alert-danger");
+        alertBox.classList.add("alert-success");
+        alertBox.innerText = "Admin login successful! Redirecting...";
+
+        setTimeout(() => {
+          window.location.href = "admin-dashboard.html";
+        }, 1200);
       } else {
-        alert("Admin email or password incorrect");
+        // Backend returned a string error message or didn't return an admin object
+        const msg = data.errorMsg || "Admin login failed.";
+        alertBox.classList.remove("d-none", "alert-success");
+        alertBox.classList.add("alert-danger");
+        alertBox.innerText = msg;
+
         if (adminBtn) {
           adminBtn.disabled = false;
           adminBtn.innerHTML = '<i class="fa-solid fa-shield-halved" style="color:#c9a84c;"></i>&nbsp;Login as Admin';
@@ -637,7 +671,10 @@ function loginAsAdmin() {
       }
     })
     .catch(err => {
-      alert("Admin login failed");
+      alertBox.classList.remove("d-none", "alert-success");
+      alertBox.classList.add("alert-danger");
+      alertBox.innerText = "Admin login failed due to a server error.";
+
       if (adminBtn) {
         adminBtn.disabled = false;
         adminBtn.innerHTML = '<i class="fa-solid fa-shield-halved" style="color:#c9a84c;"></i>&nbsp;Login as Admin';
