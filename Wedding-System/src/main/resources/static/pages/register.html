@@ -29,7 +29,8 @@
             <p class="text-muted">Join our platform to plan your dream wedding</p>
           </div>
           
-          <form id="registerForm" class="needs-validation" novalidate action="login.html">
+          <form id="registerForm" class="needs-validation" novalidate>
+            <div id="alertMessage" class="alert d-none" role="alert"></div>
             <div class="row mb-3">
               <div class="col-md-6 mb-3 mb-md-0">
                 <label for="firstName" class="form-label fw-bold">First Name</label>
@@ -55,10 +56,15 @@
               <div class="invalid-feedback">Please enter a valid phone number.</div>
             </div>
 
+
             <div class="mb-3">
-              <label for="weddingDate" class="form-label fw-bold">Expected Wedding Date</label>
-              <input type="date" class="form-control" id="weddingDate" required>
-              <div class="invalid-feedback">Please select a date.</div>
+              <label for="role" class="form-label fw-bold">Register As</label>
+              <select class="form-select" id="role" required>
+                <option value="" disabled selected>Select your role</option>
+                <option value="CUSTOMER">Customer</option>
+                <option value="VENDOR">Vendor</option>
+              </select>
+              <div class="invalid-feedback">Please select a role.</div>
             </div>
             
             <div class="mb-3">
@@ -73,7 +79,7 @@
               <div class="invalid-feedback">Passwords must match.</div>
             </div>
             
-            <button class="btn btn-custom w-100 py-2 mb-4" type="submit">Sign Up</button>
+            <button class="btn btn-custom w-100 py-2 mb-4" type="submit" id="createAccountBtn">Create Account</button>
             
             <div class="text-center mb-0">
               <p class="text-muted">Already have an account? <a href="login.html" class="text-primary fw-bold text-decoration-none">Login</a></p>
