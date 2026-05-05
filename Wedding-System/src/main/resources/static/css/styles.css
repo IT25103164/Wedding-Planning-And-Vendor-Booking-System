@@ -437,6 +437,33 @@ footer hr {
 .badge-completed { background-color: #0e7fa8; color: #fff; }
 
 /* ============================================
+   BUDGET TRACKER
+============================================ */
+.budget-summary-card {
+  background: linear-gradient(145deg, #ffffff, var(--card-bg));
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+
+.budget-category-card {
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 14px;
+  background: #fff;
+}
+
+.budget-status-badge {
+  color: var(--primary-dark);
+}
+
+.progress.budget-progress {
+  height: 9px;
+  border-radius: 999px;
+  background-color: #ece4d7;
+}
+
+/* ============================================
    CATEGORY SLIDER
    ============================================ */
 .category-slider-wrapper {
