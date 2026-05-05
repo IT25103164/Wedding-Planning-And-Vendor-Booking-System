@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Budget Planner - DreamWedding</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-expand-lg bg-white sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="../index.html">DreamWedding</a>
+    <div class="d-flex align-items-center">
+      <span class="me-3 d-none d-md-inline text-muted">Welcome, John & Jane</span>
+      <img src="https://ui-avatars.com/api/?name=John+Jane&background=d4af37&color=fff" class="rounded-circle" width="40" alt="Profile">
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4 mb-5">
+  <div class="row">
+    <div class="col-md-3 mb-4">
+      <div class="dashboard-sidebar">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="dashboard.html"><i class="fa-solid fa-house me-2"></i> Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fa-solid fa-calendar-check me-2"></i> My Bookings</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fa-solid fa-heart me-2"></i> Saved Vendors</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="budget-tracker.html"><i class="fa-solid fa-wallet me-2"></i> Budget Planner</a>
+          </li>
+          <li class="nav-item mt-3 border-top pt-2">
+            <a class="nav-link text-danger" href="login.html"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+        <h2 class="mb-0">Wedding Budget Planner</h2>
+        <span class="badge rounded-pill text-bg-light border budget-status-badge" id="budgetHealthBadge">On Track</span>
+      </div>
+
+      <div class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-body p-4">
+          <h5 class="fw-bold mb-3"><i class="fa-solid fa-sack-dollar me-2 text-primary"></i>Total Budget Setup</h5>
+          <form id="totalBudgetForm" class="row g-3 align-items-end">
+            <div class="col-md-8">
+              <label for="totalBudgetInput" class="form-label">Set your total wedding budget</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input type="number" min="0" step="100" class="form-control" id="totalBudgetInput" placeholder="25000" required>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <button type="submit" class="btn btn-custom w-100">Save Budget</button>
+            </div>
+          </form>
+          <div class="row g-3 mt-2">
+            <div class="col-sm-4">
+              <div class="budget-summary-card">
+                <p class="small text-muted mb-1">Planned Budget</p>
+                <h5 class="mb-0" id="plannedBudgetValue">$0</h5>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="budget-summary-card">
+                <p class="small text-muted mb-1">Actual Expenses</p>
+                <h5 class="mb-0" id="actualSpentValue">$0</h5>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="budget-summary-card">
+                <p class="small text-muted mb-1">Remaining</p>
+                <h5 class="mb-0" id="remainingValue">$0</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-body p-4">
+          <h5 class="fw-bold mb-3"><i class="fa-solid fa-layer-group me-2 text-primary"></i>Category-wise Budget Allocation</h5>
+          <p class="text-muted small mb-3">Allocate each category as a percentage of your total budget. Amounts update automatically.</p>
+          <div id="budgetCategoriesWrap" class="row g-3"></div>
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <span class="small text-muted">Allocated</span>
+            <span class="fw-semibold" id="allocationTotalText">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-body p-4">
+          <h5 class="fw-bold mb-3"><i class="fa-solid fa-file-invoice-dollar me-2 text-primary"></i>Expense Tracking vs Budget</h5>
+          <form id="expenseForm" class="row g-3 align-items-end mb-3">
+            <div class="col-md-4">
+              <label class="form-label" for="expenseCategory">Category</label>
+              <select id="expenseCategory" class="form-select" required></select>
+            </div>
+            <div class="col-md-5">
+              <label class="form-label" for="expenseNote">Expense Note</label>
+              <input id="expenseNote" type="text" class="form-control" placeholder="Advance payment / Decoration flowers" required>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label" for="expenseAmount">Amount</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input id="expenseAmount" type="number" min="0" step="10" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-secondary-custom">Add Expense</button>
+            </div>
+          </form>
+          <div class="table-responsive">
+            <table class="table align-middle mb-0">
+              <thead>
+              <tr>
+                <th>Category</th>
+                <th>Allocated</th>
+                <th>Spent</th>
+                <th>Usage</th>
+              </tr>
+              </thead>
+              <tbody id="categoryProgressTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-body p-4">
+          <h5 class="fw-bold mb-3"><i class="fa-solid fa-handshake-angle me-2 text-primary"></i>Cost Estimates from Booked Vendors</h5>
+          <p class="text-muted small mb-3">Estimated values from your booked vendors are shown below. Toggle "Include" to add/remove them from your tracked expenses.</p>
+          <div class="table-responsive">
+            <table class="table align-middle mb-0">
+              <thead>
+              <tr>
+                <th>Include</th>
+                <th>Vendor</th>
+                <th>Category</th>
+                <th>Estimate</th>
+              </tr>
+              </thead>
+              <tbody id="vendorEstimateTable"></tbody>
+            </table>
+          </div>
+          <div class="d-flex justify-content-end mt-3">
+            <span class="fw-semibold">Included Vendor Estimate: <span id="includedVendorEstimateValue">$0</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-4">
+          <h6 class="fw-bold mb-3">Recent Expenses</h6>
+          <div class="table-responsive">
+            <table class="table table-sm align-middle mb-0">
+              <thead>
+              <tr>
+                <th>Category</th>
+                <th>Note</th>
+                <th>Amount</th>
+                <th class="text-end">Action</th>
+              </tr>
+              </thead>
+              <tbody id="expenseHistoryTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../js/script.js"></script>
+</body>
+</html>

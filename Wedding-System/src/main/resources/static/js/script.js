@@ -79,71 +79,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const pwd = document.getElementById("password");
     const confirmPwd = document.getElementById("confirmPassword");
 
-    registerForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
+    registerForm.addEventListener("submit", (e) => {
       if (pwd.value !== confirmPwd.value) {
+        e.preventDefault();
         confirmPwd.setCustomValidity("Passwords do not match");
         confirmPwd.reportValidity();
-        return;
       } else {
         confirmPwd.setCustomValidity("");
-      }
-
-      if (!registerForm.checkValidity()) {
-        e.stopPropagation();
-        registerForm.classList.add('was-validated');
-        return;
-      }
-
-      const userData = {
-        firstName: document.getElementById("firstName").value,
-        lastName: document.getElementById("lastName").value,
-        email: document.getElementById("email").value,
-        phone: document.getElementById("phone").value,
-        role: document.getElementById("role").value,
-        password: pwd.value
-      };
-
-      const btn = document.getElementById("createAccountBtn");
-      const alertBox = document.getElementById("alertMessage");
-      btn.disabled = true;
-      btn.innerText = "Creating Account...";
-      alertBox.classList.add("d-none");
-      alertBox.classList.remove("alert-danger", "alert-success");
-
-      try {
-        const response = await fetch("http://localhost:8080/api/auth/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(userData)
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          alertBox.classList.remove("d-none");
-          alertBox.classList.add("alert-success");
-          alertBox.innerText = "Account created successfully! Redirecting to login...";
-
-          setTimeout(() => {
-            window.location.href = "login.html";
-          }, 1500);
-        } else {
-          alertBox.classList.remove("d-none");
-          alertBox.classList.add("alert-danger");
-          alertBox.innerText = data.message || "Registration failed. Please try again.";
-          btn.disabled = false;
-          btn.innerText = "Create Account";
-        }
-      } catch (error) {
-        alertBox.classList.remove("d-none");
-        alertBox.classList.add("alert-danger");
-        alertBox.innerText = "Cannot connect to server. Please make sure the backend is running.";
-        btn.disabled = false;
-        btn.innerText = "Create Account";
       }
     });
 
@@ -156,160 +98,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ── LOGIN FORM ────────────────────────────────────────────────
-  const loginForm = document.getElementById("loginForm");
-  if (loginForm) {
-    loginForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      if (!loginForm.checkValidity()) {
-        e.stopPropagation();
-        loginForm.classList.add('was-validated');
-        return;
-      }
-
-      const credentials = {
-        email: document.getElementById("email").value.trim(),
-        password: document.getElementById("password").value
-      };
-
-      const btn = document.getElementById("loginBtn");
-      const alertBox = document.getElementById("alertMessage");
-      btn.disabled = true;
-      btn.innerText = "Logging in...";
-      alertBox.classList.add("d-none");
-      alertBox.classList.remove("alert-danger", "alert-success", "alert-warning");
-
-      try {
-        const response = await fetch("http://localhost:8080/api/auth/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(credentials)
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          // ✅ Save session data
-          sessionStorage.setItem("userId", data.id);
-          sessionStorage.setItem("userEmail", data.email);
-          sessionStorage.setItem("userRole", data.role);
-          sessionStorage.setItem("firstName", data.firstName);
-          sessionStorage.setItem("lastName", data.lastName);
-
-          alertBox.classList.remove("d-none");
-          alertBox.classList.add("alert-success");
-          alertBox.innerText = `Welcome back, ${data.firstName}! Redirecting...`;
-
-          // ── Role-based redirect (ADMIN / VENDOR / CUSTOMER) ──
-          setTimeout(() => {
-            const role = data.role;
-            if (role === "ADMIN") {
-              window.location.href = "admin-dashboard.html";
-            } else if (role === "VENDOR") {
-              window.location.href = "vendor-list.html";
-            } else {
-              window.location.href = "dashboard.html";   // CUSTOMER
-            }
-          }, 1200);
-
-        } else if (data.errorCode === "USER_NOT_FOUND") {
-          // ❌ No account found → show popup
-          btn.disabled = false;
-          btn.innerText = "Login";
-          showSignUpPopup();
-
-        } else if (data.errorCode === "WRONG_PASSWORD") {
-          // ❌ Wrong password → inline alert
-          alertBox.classList.remove("d-none");
-          alertBox.classList.add("alert-danger");
-          alertBox.innerText = "Incorrect password. Please try again.";
-          btn.disabled = false;
-          btn.innerText = "Login";
-
-        } else {
-          // ❌ Generic server error
-          alertBox.classList.remove("d-none");
-          alertBox.classList.add("alert-danger");
-          alertBox.innerText = data.message || "Login failed. Please try again.";
-          btn.disabled = false;
-          btn.innerText = "Login";
-        }
-
-      } catch (error) {
-        alertBox.classList.remove("d-none");
-        alertBox.classList.add("alert-danger");
-        alertBox.innerText = "Cannot connect to server. Please make sure the backend is running.";
-        btn.disabled = false;
-        btn.innerText = "Login";
-      }
-    });
-  }
-
-  // ── SIGN-UP POPUP (called when user not found) ─────────────
-  function showSignUpPopup() {
-    // Remove any existing popup first
-    const existing = document.getElementById("signUpPopup");
-    if (existing) existing.remove();
-
-    const popup = document.createElement("div");
-    popup.id = "signUpPopup";
-    popup.style.cssText = `
-      position: fixed; inset: 0; background: rgba(0,0,0,0.55);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 9999; animation: fadeIn 0.2s ease;
-    `;
-    popup.innerHTML = `
-      <div style="
-        background: #fff; border-radius: 16px; padding: 2.5rem 2rem;
-        max-width: 420px; width: 90%; text-align: center;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-        animation: slideUp 0.3s ease;
-      ">
-        <div style="font-size:3rem; margin-bottom:1rem;">🔍</div>
-        <h4 style="font-weight:700; margin-bottom:0.5rem; color:#1a1714;">Account Not Found</h4>
-        <p style="color:#6c757d; margin-bottom:1.5rem;">
-          No account exists with that email address.<br>
-          Please <strong>sign up</strong> to create one.
-        </p>
-        <div style="display:flex; gap:0.75rem; justify-content:center; flex-wrap:wrap;">
-          <a href="register.html" style="
-            background: linear-gradient(135deg, #c9a84c, #a0702a);
-            color: #fff; border: none; border-radius: 8px;
-            padding: 0.6rem 1.6rem; font-weight:600; font-size:0.95rem;
-            text-decoration:none; display:inline-block;
-          ">Sign Up Now</a>
-          <button onclick="document.getElementById('signUpPopup').remove()" style="
-            background: transparent; color: #6c757d; border: 1.5px solid #dee2e6;
-            border-radius: 8px; padding: 0.6rem 1.4rem; font-weight:600;
-            font-size:0.95rem; cursor:pointer;
-          ">Try Again</button>
-        </div>
-      </div>
-      <style>
-        @keyframes fadeIn  { from { opacity:0 } to { opacity:1 } }
-        @keyframes slideUp { from { transform:translateY(30px); opacity:0 } to { transform:translateY(0); opacity:1 } }
-      </style>
-    `;
-    // Close on backdrop click
-    popup.addEventListener("click", (e) => {
-      if (e.target === popup) popup.remove();
-    });
-    document.body.appendChild(popup);
-  }
-
+  // Example: Display selected rating on Review pages
   const ratingStars = document.querySelectorAll('.star-rating i');
   let currentRating = 0;
-
+  
   ratingStars.forEach((star, index) => {
     star.addEventListener('mouseover', () => {
       highlightStars(index + 1);
     });
-
+    
     star.addEventListener('mouseout', () => {
       highlightStars(currentRating);
     });
-
+    
     star.addEventListener('click', () => {
       currentRating = index + 1;
       const ratingInput = document.getElementById('ratingValue');
@@ -339,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let targetScroll = 0;
     let currentScroll = 0;
     const scrollSpeed = 0.4; // Faster response (was 0.15)
-
+    
     // Initial jump to center
     setTimeout(() => {
       const item = slider.firstElementChild;
@@ -370,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // 3. Smooth Lerp
       currentScroll += (targetScroll - currentScroll) * scrollSpeed;
       slider.scrollLeft = currentScroll;
-
+      
       requestAnimationFrame(animate);
     };
 
@@ -378,8 +179,8 @@ document.addEventListener("DOMContentLoaded", () => {
     slider.addEventListener('mousemove', (e) => {
       const mouseX = e.pageX - slider.offsetLeft;
       const midX = slider.clientWidth / 2;
-      const delta = (mouseX - midX) / midX;
-      targetScroll -= delta * 15;
+      const delta = (mouseX - midX) / midX; 
+      targetScroll -= delta * 15; 
     });
 
     slider.addEventListener('touchmove', (e) => {
@@ -396,24 +197,24 @@ document.addEventListener("DOMContentLoaded", () => {
   // ============================================================
   //  HERO SECTION — SCROLL ANIMATIONS
   // ============================================================
-  const heroSection = document.querySelector('.hero-section');
-  const heroContent = document.querySelector('.hero-content');
-  const navbar = document.querySelector('.navbar');
-  const scrollArrow = document.getElementById('heroScrollArrow');
+  const heroSection  = document.querySelector('.hero-section');
+  const heroContent  = document.querySelector('.hero-content');
+  const navbar       = document.querySelector('.navbar');
+  const scrollArrow  = document.getElementById('heroScrollArrow');
 
   if (heroSection && heroContent) {
     window.addEventListener('scroll', () => {
-      const scrollY = window.scrollY;
-      const heroHeight = heroSection.offsetHeight;
-      const progress = Math.min(scrollY / heroHeight, 1); // 0 → 1 as hero scrolls out
+      const scrollY      = window.scrollY;
+      const heroHeight   = heroSection.offsetHeight;
+      const progress     = Math.min(scrollY / heroHeight, 1); // 0 → 1 as hero scrolls out
 
       // 1. Parallax — move background upward at half scroll speed
       heroSection.style.backgroundPositionY = `calc(50% + ${scrollY * 0.35}px)`;
 
       // 2. Hero content — fade out + slide up as user scrolls
-      const contentOpacity = 1 - progress * 1.8;       // fully gone before 60% scroll
+      const contentOpacity   = 1 - progress * 1.8;       // fully gone before 60% scroll
       const contentTranslate = scrollY * 0.25;            // moves up gently
-      heroContent.style.opacity = Math.max(0, contentOpacity);
+      heroContent.style.opacity   = Math.max(0, contentOpacity);
       heroContent.style.transform = `translateY(-${contentTranslate}px)`;
 
       // 3. Scroll Arrow — fade out early
@@ -445,7 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ============================================================
   //  TESTIMONIALS — SEAMLESS INFINITE TRACKING
   // ============================================================
-
+  
   const setupExploreStyleMarquee = (marqueeId, autoSpeed = 1) => {
     const slider = document.getElementById(marqueeId);
     if (!slider) return;
@@ -488,16 +289,16 @@ document.addEventListener("DOMContentLoaded", () => {
       // 3. Smooth follow
       currentScroll += (targetScroll - currentScroll) * lerp;
       wrapper.scrollLeft = currentScroll;
-
+      
       requestAnimationFrame(animate);
     };
 
     wrapper.addEventListener('mousemove', (e) => {
       const mouseX = e.pageX - wrapper.offsetLeft;
       const midX = wrapper.clientWidth / 2;
-      const delta = (mouseX - midX) / midX;
+      const delta = (mouseX - midX) / midX; 
       // Inverted: Mouse on Right -> targetScroll decreases -> Cards move Right
-      targetScroll -= delta * 20;
+      targetScroll -= delta * 20; 
     });
 
     wrapper.addEventListener('touchmove', (e) => {
@@ -511,8 +312,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // Row 1 drifts Right, Row 2 drifts Left
-  setupExploreStyleMarquee('feedbackMarqueeLTR', 0.5);
-  setupExploreStyleMarquee('feedbackMarqueeRTL', -0.5);
+  setupExploreStyleMarquee('feedbackMarqueeLTR', 0.5); 
+  setupExploreStyleMarquee('feedbackMarqueeRTL', -0.5); 
 
 
   // Star Rating Selection (Reusable for any container)
@@ -522,12 +323,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const stars = container.querySelectorAll('i');
     stars.forEach(star => {
-      star.addEventListener('click', function () {
+      star.addEventListener('click', function() {
         const rating = parseInt(this.getAttribute('data-rating'));
-
+        
         // Remove active from all stars in this container
         stars.forEach(s => s.classList.remove('active'));
-
+        
         // Add active to the clicked star specifically
         // CSS will handle highlighting this star and everything to its RIGHT (~ i)
         this.classList.add('active');
@@ -548,27 +349,27 @@ document.addEventListener("DOMContentLoaded", () => {
   if (feedbackForm) {
     feedbackForm.addEventListener('submit', (e) => {
       e.preventDefault();
-
+      
       const submitBtn = feedbackForm.querySelector('button[type="submit"]');
       const originalText = submitBtn.innerText;
-
+      
       submitBtn.disabled = true;
       submitBtn.innerText = 'Sharing Your Story...';
 
       // Simulate a small delay for premium feel
       setTimeout(() => {
         alert('Thank you for sharing your beautiful wedding story with us! 💍✨');
-
+        
         // Close modal (Bootstrap 5 way)
         const modalEl = document.getElementById('feedbackModal');
         const modalInstance = bootstrap.Modal.getInstance(modalEl);
         modalInstance.hide();
-
+        
         // Reset form
         feedbackForm.reset();
         submitBtn.disabled = false;
         submitBtn.innerText = originalText;
-
+        
         // Reset stars in form to empty/gray state
         const stars = document.getElementById('formStarRating').querySelectorAll('i');
         stars.forEach(s => {
@@ -586,14 +387,14 @@ document.addEventListener("DOMContentLoaded", () => {
 function submitQuickRating() {
   const starsContainer = document.getElementById('quickStarRating');
   const activeStars = starsContainer.querySelectorAll('i.active').length;
-
+  
   if (activeStars === 0) {
     alert('Please pick a star rating first! ⭐');
     return;
   }
 
   alert(`Thank you for your ${activeStars}-star quick rating! We appreciate it. 🌟`);
-
+  
   // Reset quick stars
   starsContainer.querySelectorAll('i').forEach(s => {
     s.classList.remove('active');
@@ -601,83 +402,275 @@ function submitQuickRating() {
   });
 }
 
-// ── ADMIN QUICK LOGIN ──────────────────────────────────────────
-// Called by the "Login as Admin" button on login.html.
-function loginAsAdmin() {
-  const emailInput = document.getElementById("email").value.trim();
-  const passwordInput = document.getElementById("password").value;
-  const alertBox = document.getElementById("alertMessage");
+document.addEventListener('DOMContentLoaded', () => {
+  const budgetRoot = document.getElementById('totalBudgetForm');
+  if (!budgetRoot) return;
 
-  if (!emailInput || !passwordInput) {
-    alertBox.classList.remove("d-none", "alert-success", "alert-warning");
-    alertBox.classList.add("alert-danger");
-    alertBox.innerText = "Please enter both email and password to login.";
-    return;
-  }
+  const BUDGET_STORAGE_KEY = 'dreamWeddingBudgetPlanner';
 
-  const adminBtn = document.getElementById("adminLoginBtn");
-  if (adminBtn) {
-    adminBtn.disabled = true;
-    adminBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color:#c9a84c;"></i>&nbsp;Signing in as Admin...';
-  }
+  const categories = [
+    { key: 'venue', label: 'Venue', percent: 35 },
+    { key: 'catering', label: 'Catering', percent: 25 },
+    { key: 'photography', label: 'Photography', percent: 10 },
+    { key: 'decor', label: 'Decor', percent: 10 },
+    { key: 'entertainment', label: 'Entertainment', percent: 8 },
+    { key: 'attire', label: 'Attire & Beauty', percent: 7 },
+    { key: 'other', label: 'Other', percent: 5 }
+  ];
 
-  alertBox.classList.add("d-none"); // Hide existing alerts
-
-  const adminData = {
-    email: emailInput,
-    password: passwordInput
+  const defaultState = {
+    totalBudget: 25000,
+    categories: categories.reduce((acc, item) => {
+      acc[item.key] = item.percent;
+      return acc;
+    }, {}),
+    expenses: [],
+    vendors: [
+      { id: 'v1', name: 'Sunset Garden Estates', category: 'venue', estimate: 8500, included: true },
+      { id: 'v2', name: 'Delightful Fine Dining', category: 'catering', estimate: 5200, included: true },
+      { id: 'v3', name: 'Lens & Light Studios', category: 'photography', estimate: 1800, included: true },
+      { id: 'v4', name: 'Soundscape DJ Services', category: 'entertainment', estimate: 1200, included: false }
+    ]
   };
 
-  fetch("http://localhost:8080/api/admin/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(adminData)
-  })
-    // Parse as text first because backend might return a plain string error
-    .then(async res => {
-      const text = await res.text();
-      try {
-        return JSON.parse(text);
-      } catch (e) {
-        return { errorMsg: text };
-      }
-    })
-    .then(data => {
-      // If it returned the admin object (has email property)
-      if (data && data.email) {
-        sessionStorage.setItem("userEmail", data.email);
-        sessionStorage.setItem("userRole", "ADMIN");
+  const loadState = () => {
+    try {
+      const saved = localStorage.getItem(BUDGET_STORAGE_KEY);
+      if (!saved) return JSON.parse(JSON.stringify(defaultState));
+      const parsed = JSON.parse(saved);
+      return {
+        totalBudget: Number(parsed.totalBudget) || defaultState.totalBudget,
+        categories: { ...defaultState.categories, ...(parsed.categories || {}) },
+        expenses: Array.isArray(parsed.expenses) ? parsed.expenses : [],
+        vendors: Array.isArray(parsed.vendors) && parsed.vendors.length ? parsed.vendors : defaultState.vendors
+      };
+    } catch (error) {
+      return JSON.parse(JSON.stringify(defaultState));
+    }
+  };
 
-        alertBox.classList.remove("d-none", "alert-danger");
-        alertBox.classList.add("alert-success");
-        alertBox.innerText = "Admin login successful! Redirecting...";
+  let state = loadState();
 
-        setTimeout(() => {
-          window.location.href = "admin-dashboard.html";
-        }, 1200);
-      } else {
-        // Backend returned a string error message or didn't return an admin object
-        const msg = data.errorMsg || "Admin login failed.";
-        alertBox.classList.remove("d-none", "alert-success");
-        alertBox.classList.add("alert-danger");
-        alertBox.innerText = msg;
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(amount || 0);
+  };
 
-        if (adminBtn) {
-          adminBtn.disabled = false;
-          adminBtn.innerHTML = '<i class="fa-solid fa-shield-halved" style="color:#c9a84c;"></i>&nbsp;Login as Admin';
-        }
-      }
-    })
-    .catch(err => {
-      alertBox.classList.remove("d-none", "alert-success");
-      alertBox.classList.add("alert-danger");
-      alertBox.innerText = "Admin login failed due to a server error.";
+  const saveState = () => {
+    localStorage.setItem(BUDGET_STORAGE_KEY, JSON.stringify(state));
+  };
 
-      if (adminBtn) {
-        adminBtn.disabled = false;
-        adminBtn.innerHTML = '<i class="fa-solid fa-shield-halved" style="color:#c9a84c;"></i>&nbsp;Login as Admin';
-      }
+  const totalBudgetInput = document.getElementById('totalBudgetInput');
+  const plannedBudgetValue = document.getElementById('plannedBudgetValue');
+  const actualSpentValue = document.getElementById('actualSpentValue');
+  const remainingValue = document.getElementById('remainingValue');
+  const budgetHealthBadge = document.getElementById('budgetHealthBadge');
+  const budgetCategoriesWrap = document.getElementById('budgetCategoriesWrap');
+  const allocationTotalText = document.getElementById('allocationTotalText');
+  const expenseCategory = document.getElementById('expenseCategory');
+  const expenseForm = document.getElementById('expenseForm');
+  const expenseNote = document.getElementById('expenseNote');
+  const expenseAmount = document.getElementById('expenseAmount');
+  const categoryProgressTable = document.getElementById('categoryProgressTable');
+  const vendorEstimateTable = document.getElementById('vendorEstimateTable');
+  const includedVendorEstimateValue = document.getElementById('includedVendorEstimateValue');
+  const expenseHistoryTable = document.getElementById('expenseHistoryTable');
+
+  const categoryByKey = categories.reduce((acc, item) => {
+    acc[item.key] = item.label;
+    return acc;
+  }, {});
+
+  const getVendorEstimatedTotal = () => state.vendors.filter(v => v.included).reduce((sum, v) => sum + Number(v.estimate || 0), 0);
+  const getManualExpenseTotal = () => state.expenses.reduce((sum, item) => sum + Number(item.amount || 0), 0);
+  const getActualTotal = () => getVendorEstimatedTotal() + getManualExpenseTotal();
+  const getAllocationFor = (categoryKey) => (state.totalBudget * Number(state.categories[categoryKey] || 0)) / 100;
+
+  const getSpentByCategory = (categoryKey) => {
+    const manual = state.expenses
+      .filter(item => item.category === categoryKey)
+      .reduce((sum, item) => sum + Number(item.amount || 0), 0);
+    const vendor = state.vendors
+      .filter(item => item.category === categoryKey && item.included)
+      .reduce((sum, item) => sum + Number(item.estimate || 0), 0);
+    return manual + vendor;
+  };
+
+  const renderCategoryInputs = () => {
+    budgetCategoriesWrap.innerHTML = '';
+    categories.forEach((item) => {
+      const currentPercent = Number(state.categories[item.key] || 0);
+      const col = document.createElement('div');
+      col.className = 'col-md-6';
+      col.innerHTML = `
+        <div class="budget-category-card">
+          <div class="d-flex justify-content-between align-items-center">
+            <strong>${item.label}</strong>
+            <span>${formatCurrency(getAllocationFor(item.key))}</span>
+          </div>
+          <label class="form-label mt-2 mb-1 small text-muted">Allocation %</label>
+          <input type="number" class="form-control form-control-sm budget-percent-input" data-category="${item.key}" min="0" max="100" step="1" value="${currentPercent}">
+        </div>
+      `;
+      budgetCategoriesWrap.appendChild(col);
     });
-}
+  };
+
+  const renderExpenseCategoryOptions = () => {
+    expenseCategory.innerHTML = categories
+      .map(item => `<option value="${item.key}">${item.label}</option>`)
+      .join('');
+  };
+
+  const renderVendorTable = () => {
+    vendorEstimateTable.innerHTML = '';
+    state.vendors.forEach((vendor) => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>
+          <input class="form-check-input vendor-include-toggle" type="checkbox" data-vendor-id="${vendor.id}" ${vendor.included ? 'checked' : ''}>
+        </td>
+        <td>${vendor.name}</td>
+        <td>${categoryByKey[vendor.category] || vendor.category}</td>
+        <td>${formatCurrency(vendor.estimate)}</td>
+      `;
+      vendorEstimateTable.appendChild(row);
+    });
+    includedVendorEstimateValue.textContent = formatCurrency(getVendorEstimatedTotal());
+  };
+
+  const renderProgressTable = () => {
+    categoryProgressTable.innerHTML = '';
+    categories.forEach((item) => {
+      const allocated = getAllocationFor(item.key);
+      const spent = getSpentByCategory(item.key);
+      const usagePercent = allocated > 0 ? Math.round((spent / allocated) * 100) : 0;
+      const progressClass = usagePercent > 100 ? 'bg-danger' : usagePercent > 85 ? 'bg-warning' : 'bg-success';
+
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${item.label}</td>
+        <td>${formatCurrency(allocated)}</td>
+        <td>${formatCurrency(spent)}</td>
+        <td style="min-width: 180px;">
+          <div class="progress budget-progress">
+            <div class="progress-bar ${progressClass}" role="progressbar" style="width: ${Math.min(usagePercent, 100)}%"></div>
+          </div>
+          <small class="text-muted">${usagePercent}% used</small>
+        </td>
+      `;
+      categoryProgressTable.appendChild(row);
+    });
+  };
+
+  const renderExpenseHistory = () => {
+    expenseHistoryTable.innerHTML = '';
+    if (!state.expenses.length) {
+      expenseHistoryTable.innerHTML = '<tr><td colspan="4" class="text-muted">No manual expenses added yet.</td></tr>';
+      return;
+    }
+
+    [...state.expenses].reverse().forEach((item) => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${categoryByKey[item.category] || item.category}</td>
+        <td>${item.note}</td>
+        <td>${formatCurrency(item.amount)}</td>
+        <td class="text-end">
+          <button class="btn btn-sm btn-outline-danger delete-expense-btn" data-expense-id="${item.id}">Delete</button>
+        </td>
+      `;
+      expenseHistoryTable.appendChild(row);
+    });
+  };
+
+  const renderSummary = () => {
+    const planned = Number(state.totalBudget || 0);
+    const actual = getActualTotal();
+    const remaining = planned - actual;
+    const allocationTotal = categories.reduce((sum, item) => sum + Number(state.categories[item.key] || 0), 0);
+
+    totalBudgetInput.value = planned;
+    plannedBudgetValue.textContent = formatCurrency(planned);
+    actualSpentValue.textContent = formatCurrency(actual);
+    remainingValue.textContent = formatCurrency(remaining);
+    allocationTotalText.textContent = `${allocationTotal}%`;
+
+    const spentRatio = planned > 0 ? (actual / planned) : 0;
+    if (spentRatio > 1) {
+      budgetHealthBadge.textContent = 'Over Budget';
+      budgetHealthBadge.className = 'badge rounded-pill bg-danger budget-status-badge';
+    } else if (spentRatio > 0.85) {
+      budgetHealthBadge.textContent = 'Near Limit';
+      budgetHealthBadge.className = 'badge rounded-pill bg-warning text-dark budget-status-badge';
+    } else {
+      budgetHealthBadge.textContent = 'On Track';
+      budgetHealthBadge.className = 'badge rounded-pill bg-success budget-status-badge';
+    }
+  };
+
+  const refreshAll = () => {
+    renderCategoryInputs();
+    renderExpenseCategoryOptions();
+    renderVendorTable();
+    renderProgressTable();
+    renderExpenseHistory();
+    renderSummary();
+  };
+
+  budgetRoot.addEventListener('submit', (event) => {
+    event.preventDefault();
+    state.totalBudget = Number(totalBudgetInput.value || 0);
+    saveState();
+    refreshAll();
+  });
+
+  budgetCategoriesWrap.addEventListener('input', (event) => {
+    const input = event.target.closest('.budget-percent-input');
+    if (!input) return;
+    const percent = Number(input.value || 0);
+    state.categories[input.dataset.category] = Math.max(0, Math.min(100, percent));
+    saveState();
+    renderCategoryInputs();
+    renderProgressTable();
+    renderSummary();
+  });
+
+  expenseForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const amount = Number(expenseAmount.value || 0);
+    if (!amount) return;
+    state.expenses.push({
+      id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+      category: expenseCategory.value,
+      note: expenseNote.value.trim(),
+      amount
+    });
+    expenseForm.reset();
+    saveState();
+    refreshAll();
+  });
+
+  vendorEstimateTable.addEventListener('change', (event) => {
+    const toggle = event.target.closest('.vendor-include-toggle');
+    if (!toggle) return;
+    const vendor = state.vendors.find((item) => item.id === toggle.dataset.vendorId);
+    if (!vendor) return;
+    vendor.included = toggle.checked;
+    saveState();
+    renderVendorTable();
+    renderProgressTable();
+    renderExpenseHistory();
+    renderSummary();
+  });
+
+  expenseHistoryTable.addEventListener('click', (event) => {
+    const deleteBtn = event.target.closest('.delete-expense-btn');
+    if (!deleteBtn) return;
+    state.expenses = state.expenses.filter((item) => item.id !== deleteBtn.dataset.expenseId);
+    saveState();
+    refreshAll();
+  });
+
+  refreshAll();
+});
+
